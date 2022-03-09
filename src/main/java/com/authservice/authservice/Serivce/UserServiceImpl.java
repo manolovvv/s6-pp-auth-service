@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(User user) {
-        User foundUser = userRepository.findOne(user);
+        //User foundUser = userRepository.findOne(user);
         return null;
     }
 
