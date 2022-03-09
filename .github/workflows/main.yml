@@ -22,8 +22,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: check directory
-        run: ls
+      - name: update
+        run: git update-index --chmod=+x mvnw
       - name: Build java app
         run: ./mvnw clean install
 
