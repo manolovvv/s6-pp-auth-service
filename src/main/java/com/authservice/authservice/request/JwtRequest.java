@@ -1,4 +1,4 @@
-package com.authservice.authservice.auth;
+package com.authservice.authservice.request;
 
 import java.io.Serializable;
 

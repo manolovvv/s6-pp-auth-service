@@ -1,5 +1,6 @@
 package com.authservice.authservice;
 
+import com.authservice.authservice.Model.Role;
 import com.authservice.authservice.Model.User;
 import com.authservice.authservice.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class AuthServiceApplication {
 	@Bean
 	public void loadData() {
 		// save a couple of customers
-		repository.save(new User("test", encoder.encode("test")));
+		repository.save(new User("test", encoder.encode("test"), Role.USER));
 
 		// fetch all customers
 		System.out.println("-------------------------------------");
