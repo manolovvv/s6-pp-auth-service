@@ -33,7 +33,7 @@ jobs:
         run: docker pull mysql
         
       - name: Start docker container
-        run: docker run -d --restart=always -p 3306:3306 mysql:latest
+        run: docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=users mysql
       
       
       - name: Set up Java version
