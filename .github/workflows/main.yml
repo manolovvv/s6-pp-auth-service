@@ -33,7 +33,7 @@ jobs:
         run: docker pull mysql
         
       - name: Start docker container
-        run: docker run --name=mysql -d mysql
+        run: docker run -d --restart=always -p 3306:3306 mysql:latest
       
       
       - name: Set up Java version
