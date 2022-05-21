@@ -29,8 +29,8 @@ public class AuthServiceApplication {
 	@Bean
 	public void loadData() {
 		// save a couple of customers
-		repository.save(new User("test", encoder.encode("test"), Role.USER));
-		repository.save(new User("testAdmin", encoder.encode("testAdmin"), Role.ADMIN));
+		//repository.save(new User("test", encoder.encode("test"), Role.USER));
+		//repository.save(new User("testAdmin", encoder.encode("testAdmin"), Role.ADMIN));
 
 		// fetch all customers
 		System.out.println("-------------------------------------");
