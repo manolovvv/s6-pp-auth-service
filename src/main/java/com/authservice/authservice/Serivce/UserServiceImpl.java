@@ -2,8 +2,6 @@ package com.authservice.authservice.Serivce;
 
 import com.authservice.authservice.Model.User;
 import com.authservice.authservice.Repository.UserRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,8 +9,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
