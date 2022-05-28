@@ -40,7 +40,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
            distribution: 'temurin'
-           java-version: '8'
+           java-version: '11'
            
       - name: Analyze with SonarCloud
         run: ./mvnw -B verify sonar:sonar -Dsonar.projectKey=s6-pp-auth-service -Dsonar.organization=manolovvv -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
@@ -57,6 +57,6 @@ jobs:
         run: |
           gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
           gcloud auth configure-docker europe-docker.pkg.dev
-          docker build -t europe-west4-docker.pkg.dev/thematic-mapper-351607/kalve:latest .
-          docker image push europe-west4-docker.pkg.dev/thematic-mapper-351607/kalve:latest
+          docker build -t europe-west4-docker.pkg.dev/thematic-mapper-351607/kalve/auth-service:latest .
+          docker image push europe-west4-docker.pkg.dev/thematic-mapper-351607/kalve/auth-service:latest
         
