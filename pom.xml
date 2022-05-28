@@ -14,8 +14,8 @@
 	<name>auth-service</name>
 	<description>Auth service for Individual project</description>
 	<properties>
-		<java.version>11</java.version>
-		<spring-cloud.version>2021.0.1</spring-cloud.version>
+		<java.version>1.8</java.version>
+		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
 		<sonar.projectKey>s6-pp-auth-service</sonar.projectKey>
 		<sonar.organization>manolovvv</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -149,6 +149,14 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
