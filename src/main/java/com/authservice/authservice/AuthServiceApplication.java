@@ -13,8 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication
 public class AuthServiceApplication {
 
-	@Autowired
-	private UserRepository repository;
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -24,18 +22,6 @@ public class AuthServiceApplication {
 
 		SpringApplication.run(AuthServiceApplication.class, args);
 
-	}
-
-	@Bean
-	public void loadData() {
-		// save a couple of customers
-		//repository.save(new User("test", encoder.encode("test"), Role.USER));
-		//repository.save(new User("testAdmin", encoder.encode("testAdmin"), Role.ADMIN));
-
-		// fetch all customers
-		System.out.println("-------------------------------------");
-
-		System.out.println("DB READY");
 	}
 
 

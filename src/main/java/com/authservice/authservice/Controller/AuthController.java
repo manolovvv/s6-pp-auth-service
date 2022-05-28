@@ -15,21 +15,16 @@ import com.authservice.authservice.request.TokenRefreshRequest;
 import com.authservice.authservice.response.TokenRefreshResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin
 @RestController
 public class AuthController {
 
@@ -58,13 +53,8 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody JwtRequest authenticationRequest) throws Exception{
         try{
           User user = userRepository.findByEmail(authenticationRequest.getEmail());
-            System.out.println(user);
         if(user != null && encoder.matches(authenticationRequest.getPassword(), user.getPassword())) {
             authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
-//            Authentication authentication = authenticationManager
-//                    .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
-//
-           // JwtUserDetailsImpl userDetails = (JwtUserDetailsImpl) authentication.getPrincipal();
 
             final JwtUserDetailsImpl userDetails = (JwtUserDetailsImpl) userDetailsService
                     .loadUserByUsername(authenticationRequest.getEmail());
@@ -75,24 +65,22 @@ public class AuthController {
             final String token = jwtUtil.generateToken(userDetails);
 
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
-            System.out.println(refreshToken.getToken());
-
-            return ResponseEntity.ok(new JwtResponse(token));
+            JwtResponse response = new JwtResponse(token, user.getId(), roles.get(0), refreshToken.getToken());
+            return ResponseEntity.ok(new JwtResponse(token, user.getId(), roles.get(0), refreshToken.getToken()));
         }
         else{
             throw new Exception("Invalid credentials");
         }
         }
         catch (Exception e){
-            return (ResponseEntity<?>) ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.ok(e.getMessage());
         }
 
     }
 
     @GetMapping("getOneByEmail/{email}")
     public User getUserByEmail(@PathVariable String email) {
-        User user = userRepository.findByEmail(email);
-        return user;
+        return userRepository.findByEmail(email);
 
     }
 
@@ -104,9 +92,7 @@ public class AuthController {
 
     private void authenticate(String email, String password) throws Exception {
         try {
-            System.out.println("Stifga");
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-            System.out.println("Stiftukdsada");
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
@@ -118,12 +104,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@RequestBody User user){
-        System.out.println(user.getEmail());
-        System.out.println(user.getPassword());
         user.setPassword(encoder.encode(user.getPassword()));
 
         return userService.register(user);
     }
+
 
     @PostMapping("/refreshtoken")
     public ResponseEntity<?> refreshtoken(@RequestBody TokenRefreshRequest request) {
@@ -132,10 +117,8 @@ public class AuthController {
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
                 .map(user -> {
-                    System.out.println(user);
 
                     String token = jwtUtil.generateTokenFromEmail(user.getEmail());
-                    System.out.println(token);
                     TokenRefreshResponse tokenRefreshResponse = null;
                     try{
 
@@ -150,6 +133,11 @@ public class AuthController {
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database!"));
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteById(@PathVariable("id") Long id){
+        return userService.deleteById(id);
     }
 
 }
