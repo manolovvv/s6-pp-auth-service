@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -30,6 +31,10 @@ public class JwtUtil implements Serializable {
     //retrieve username from jwt token
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    public Long getIdFromToken(String token) {
+        return getAllClaimsFromToken(token).get("id",Long.class);
     }
 
     //retrieve expiration date from jwt token
@@ -53,9 +58,9 @@ public class JwtUtil implements Serializable {
     }
 
     //generate token for user
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(JwtUserDetailsImpl userDetails) {
         Map<String, Object> claims = new HashMap<>();
-
+        claims.put("id",userDetails.getId());
         return doGenerateToken(claims, userDetails.getUsername());
     }
 

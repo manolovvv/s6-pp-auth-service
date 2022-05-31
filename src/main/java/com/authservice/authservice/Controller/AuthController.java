@@ -13,6 +13,7 @@ import com.authservice.authservice.auth.JwtUserDetailsService;
 import com.authservice.authservice.auth.JwtUtil;
 import com.authservice.authservice.request.TokenRefreshRequest;
 import com.authservice.authservice.response.TokenRefreshResponse;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -65,7 +66,6 @@ public class AuthController {
             final String token = jwtUtil.generateToken(userDetails);
 
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
-            JwtResponse response = new JwtResponse(token, user.getId(), roles.get(0), refreshToken.getToken());
             return ResponseEntity.ok(new JwtResponse(token, user.getId(), roles.get(0), refreshToken.getToken()));
         }
         else{
