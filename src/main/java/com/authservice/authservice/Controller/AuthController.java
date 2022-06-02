@@ -106,6 +106,7 @@ public class AuthController {
     public String register(@RequestBody User user){
         user.setPassword(encoder.encode(user.getPassword()));
 
+
         return userService.register(user);
     }
 
